@@ -9,7 +9,7 @@ endif
 
 export LC_ALL = C
 export LANG = C.UTF-8
-PY_FILES := my_module tests
+PY_FILES := gold-python tests
 VERSION := $(shell poetry version --short)
 
 all: clean venv build
@@ -68,7 +68,7 @@ build: test mypy isort black lint
 
 run:
 	@echo Execute package directly
-	$(POETRY_CMD) run python -m my_module
+	$(POETRY_CMD) run python -m gold-python
 
 clear-cache:
 	@echo Clear poetry cache

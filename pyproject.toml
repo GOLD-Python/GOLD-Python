@@ -1,16 +1,16 @@
 [tool.poetry]
-name = "my_module"
-version = "0.0.8"
+name = "gold_python"
+version = "0.0.1"
 description = ""
-license = "Apache 2.0"
-authors = ["Basti Tee <basti.tee@posteo.de>"]
-maintainers = ["Basti Tee <basti.tee@posteo.de>"]
+license = "BSD-3-Clause"
+authors = ["Nicolas Saavedra Gonzalez <personal@nicolassaavedra.com>"]
+maintainers = ["Nicolas Saavedra Gonzalez <personal@nicolassaavedra.com>"]
 readme = "README.md"
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
     "Natural Language :: English",
-    "License :: OSI Approved :: Apache Software License",
+    "License :: OSI Approved :: BSD-3 Clause License",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3.7",
     "Programming Language :: Python :: 3.8",
