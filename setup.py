@@ -7,7 +7,9 @@ long_description = (this_directory / "README.md").read_text()
 setup(
   name = 'gold_python',
   packages = ['gold_python'],
-  version = '0.1.1',
+  version = '0.1.1.post1',
+  long_description=long_description,
+  long_description_content_type='text/markdown',
   license='BSD 3-Clause',
   description = 'Library for the developement of finite automata',
   author = 'Nicolas Saavedra Gonzalez',
