@@ -1,54 +1,62 @@
+from collections import defaultdict
 from inspect import signature
 from typing import Any, Callable
-from util import *
+from gold_python.exceptions import FunctionDefinitionNotFoundException, NotEnoughArgumentsException
+from gold_python.util import *
 
 class WrappedFunc:
 
-    def __init__(self, combinefunc) -> None:
+    def __init__(self, func, combinefunc, minlen) -> None:
         self.__combinefunc = combinefunc
-        self.__registry = {}
+        self.__minlen = minlen
+        self.__name = func.__name__
+        self.__registry = defaultdict(list)
+        self.register(func)
 
     def register(self, func: Callable):
         """
         Registers this function as callable by a delta-like function
         """
         paramLength = len(signature(func).parameters)
-
-        if paramLength in self.__registry:
-            self.__registry[paramLength].append(func)
-        else:
-            self.__registry[paramLength] = [func,]
+        self.__registry[paramLength].append(func)
         return func
 
     def __call__(self, *args: Any) -> Any:
-        if len(args) < self.minlen:
-            raise Exception("Delta function must have at least two parameters to be valid")
+        if len(args) < self.__minlen:
+            raise NotEnoughArgumentsException(self.__name)
 
-        if len(args) not in self.__registry:
-            raise Exception(f"Could not find a function for a state that contains {len(args)} elements")
+        if len(self.__registry[len(args)]) < 1:
+            raise FunctionDefinitionNotFoundException(self.__name, len(args))
 
-        return self.__combinefunc(self.__registry[len(args)], *args)()
+        return self.__combinefunc(self.__registry[len(args)], *args)
 
-
-class DeltaFunc:
+class GoldDecorator:
 
     def __init__(self) -> None:
+        self.type = ""
+        self.minlen = -1
+        self.combinefunc = None
+
+    def __call__(self, func: Callable) -> WrappedFunc:
+        return WrappedFunc(func, self.combinefunc, self.minlen)
+
+class DeltaDecorator(GoldDecorator):
+
+    def __init__(self) -> None:
+        super().__init__()
         self.type = 'deltafunc'
         self.minlen = 2
         self.combinefunc = combine
 
-    def __call__(self, func: Callable) -> WrappedFunc:
-        wrapperFunc = WrappedFunc(self.combinefunc)
-        wrapperFunc.register(func)
-        return wrapperFunc
-
-class TransducerFunc(DeltaFunc):
+class TransducerDecorator(GoldDecorator):
 
     def __init__(self) -> None:
         super().__init__()
         self.type = 'transducerfunc'
+        self.minlen = 2
+        self.combinefunc = combine
 
-class PushdownFunc(DeltaFunc):
+class PushdownDecorator(GoldDecorator):
 
     def __init__(self) -> None:
         super().__init__()
@@ -57,7 +65,7 @@ class PushdownFunc(DeltaFunc):
         self.combinefunc = combine_stack
 
 
-deltafunc = DeltaFunc()
+deltafunc = DeltaDecorator()
 """
 Declares this function as a delta function for automata.
 
@@ -66,7 +74,7 @@ always be the next symbol. The other arguments before that will be the current s
 split into variables if the state is a tuple.
 """
 
-transducerfunc = TransducerFunc()
+transducerfunc = TransducerDecorator()
 """
 Declares this function as a transducer function for automata.
 
@@ -75,7 +83,7 @@ always be the next symbol. The other arguments before that will be the current s
 split into variables if the state is a tuple.
 """
 
-pushdownfunc = PushdownFunc()
+pushdownfunc = PushdownDecorator()
 """
 Declares this function as a pushdown function for pushdown automata.
 
