@@ -1,13 +1,15 @@
 from collections import defaultdict
 from typing import Callable, Iterable
 import networkx as nx
-from gold_python.exceptions import MultiplePathsFoundException, OutputSymbolNotFoundException, PathNotFoundException, StateNotFoundException, SymbolNotFoundException
-
+from gold_python.delta import WrappedFunc
+from gold_python.exceptions import *
 from gold_python.util import call_func_iterable
+
+Function = WrappedFunc | Callable
 
 class DeterministicAutomata:
 
-    def __init__(self, states: Iterable, alphabet: Iterable, initial_state: tuple, final_states: tuple, delta: Callable) -> None:
+    def __init__(self, states: Iterable, alphabet: Iterable, initial_state: tuple, final_states: tuple, delta: Function) -> None:
         self.states = set([tuple(state) if isinstance(state, list) else state for state in states])
         self.alphabet = set(alphabet)
         self.initial_state = initial_state
@@ -57,7 +59,7 @@ class DeterministicAutomata:
 
 class DeterministicTrasducer(DeterministicAutomata):
 
-    def __init__(self, states: Iterable, alphabet: Iterable, output_alphabet: Iterable, initial_state: tuple, final_states: tuple, delta: Callable, transfunc: Callable):
+    def __init__(self, states: Iterable, alphabet: Iterable, output_alphabet: Iterable, initial_state: tuple, final_states: tuple, delta: Function, transfunc: Function) -> None:
 
         super().__init__(states, alphabet, initial_state, final_states, delta)
         self.output_alphabet = set(output_alphabet)

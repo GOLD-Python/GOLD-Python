@@ -1,8 +1,8 @@
 from collections import defaultdict
 from inspect import signature
 from typing import Any, Callable
-from gold_python.exceptions import FunctionDefinitionNotFoundException, NotEnoughArgumentsException
-from gold_python.util import *
+from gold_python.exceptions import *
+from gold_python.util import combine, combine_stack
 
 class WrappedFunc:
 
@@ -21,7 +21,7 @@ class WrappedFunc:
         self.__registry[paramLength].append(func)
         return func
 
-    def __call__(self, *args: Any) -> Any:
+    def __call__(self, *args: Any) -> list:
         if len(args) < self.__minlen:
             raise NotEnoughArgumentsException(self.__name)
 
