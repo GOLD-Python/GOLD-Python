@@ -1,9 +1,12 @@
+anytree==2.8.0
 attrs==22.1.0
 exceptiongroup==1.0.0
+graphviz==0.20.1
 iniconfig==1.1.1
 networkx==2.8.7
 packaging==21.3
 pluggy==1.0.0
 pyparsing==3.0.9
 pytest==7.2.0
+six==1.16.0
 tomli==2.0.1
