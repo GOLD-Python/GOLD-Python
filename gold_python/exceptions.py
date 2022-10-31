@@ -37,7 +37,11 @@ class StateNotFoundException(Exception):
     """
 
     def __init__(self, symbol, state, errstate) -> None:
-        super().__init__(f"The state {errstate} generated from the state {state} and symbol {symbol} is not part of the set of possible states for the automata")
+
+        if hasattr(errstate, '__iter__') and not isinstance(errstate, str):
+            errstate = ", ".join(errstate)
+
+        super().__init__(f"The state(s) {errstate} generated from the state {state} and symbol {symbol} is/are not part of the set of possible states for the automata")
 
 class NotEnoughArgumentsException(Exception):
     """

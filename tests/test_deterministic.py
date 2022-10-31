@@ -35,23 +35,23 @@ class TestDeterministic:  # noqa: D101
     def test_transducer(self) -> None:
 
         @deltafunc
-        def delta(state: int, symbol: str) -> int:
+        def delta(state: int, _: str) -> int:
             if state % 2 == 0:
                 return (state, 2)
             return (state + 1) % 4
 
         @delta.register
-        def _(state: int, extra: int, symbol: str) -> int:
+        def _(state: int, extra: int, _: str) -> int:
             return (state + extra + 1) % 4
 
         @transducerfunc
-        def trans(state: int, symbol: str) -> int:
+        def trans(state: int, _: str) -> int:
             if state % 2 == 0:
                 return "a"
             return "b"
 
         @trans.register
-        def _(state: int, extra: int, symbol: str) -> int:
+        def _(_: int, __: int, ___: str) -> int:
             return "c"
 
         states = [0, 1, 2, 3, [0, 2], [1, 2], [2, 2], [3, 2]]

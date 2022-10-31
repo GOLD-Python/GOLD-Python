@@ -7,7 +7,7 @@ long_description = (this_directory / "README.md").read_text()
 setup(
   name = 'gold_python',
   packages = ['gold_python'],
-  version = '0.1.1.post1',
+  version = '0.1.2',
   long_description=long_description,
   long_description_content_type='text/markdown',
   license='BSD 3-Clause',
@@ -15,10 +15,12 @@ setup(
   author = 'Nicolas Saavedra Gonzalez',
   author_email = 'personal@nicolassaavedra.com',
   url = 'https://github.com/GOLD-Python/GOLD-Python',
-  download_url = 'https://github.com/GOLD-Python/GOLD-Python/archive/refs/tags/v01-BETA.zip',
+  download_url = 'https://github.com/GOLD-Python/GOLD-Python/archive/refs/tags/v012-BETA.zip',
   keywords = ['automata', 'gold', 'transducer', 'pushdown', 'deterministic'],
   install_requires=[
           'networkx',
+          'anytree',
+          'graphviz'
       ],
   classifiers=[
     'Development Status :: 4 - Beta',

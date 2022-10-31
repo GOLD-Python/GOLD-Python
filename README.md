@@ -51,7 +51,7 @@ if __name__ == "__main__":
 * ~~Deterministic Finite State Automata~~
 * ~~Deterministic Transducer (Mealey)~~
 * ~~Basic Set Operations (Between, Product)~~
-* Non-Deterministic Finite State Automata
+* ~~Non-Deterministic Finite State Automata~~
 * Pushdown Automata
 * Advanced Set Operations (String ranges, Parts of sets, etc)
 * GUI Interface to show Automata
