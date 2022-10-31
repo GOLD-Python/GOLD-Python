@@ -2,15 +2,14 @@ from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor
 from queue import Queue
 from threading import Lock
-from typing import Any, Iterable, Set
+from typing import Any, Iterable
 
-from gold_python.deterministic import Function
+from gold_python.automata.deterministic import Function
 from gold_python.util import call_func_iterable
 from gold_python.exceptions import *
 import networkx as nx
 
 from anytree import Node
-from anytree.exporter import DotExporter
 
 class Task:
     def __init__(self, state: Any, tape: str, next: str, node: Node) -> None:

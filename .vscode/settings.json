@@ -16,5 +16,7 @@
     "python.linting.flake8Args": ["--verbose"],
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true,
-    "python.testing.pytestArgs": []
+    "python.testing.pytestArgs": [],
+    "esbonio.sphinx.confDir": "",
+    "restructuredtext.syntaxHighlighting.disabled": true
 }

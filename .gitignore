@@ -109,3 +109,5 @@ venv.bak/
 
 # Other
 .DS_Store
+
+docs/build

@@ -7,7 +7,7 @@ along with the code formatter.
 
 import __future__
 from gold_python import *
-from gold_python.nondeterministic import NonDeterministicAutomata  # noqa: F401
+from gold_python.automata.nondeterministic import NonDeterministicAutomata  # noqa: F401
 
 class TestNonDeterministic:  # noqa: D101
 
