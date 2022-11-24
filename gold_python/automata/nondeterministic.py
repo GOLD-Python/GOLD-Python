@@ -1,59 +1,44 @@
 from collections import defaultdict
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ProcessPoolExecutor
 from queue import Queue
 from threading import Lock
-from typing import Any, Iterable
+from typing import Iterable, Any
 
 from gold_python.automata.deterministic import Function
 from gold_python.util import call_func_iterable
 from gold_python.exceptions import *
-import networkx as nx
+from gold_python.automata.abstract import AbstractNonDeterministicAutomata
+from gold_python.automata.util import Task
 
 from anytree import Node
-
-class Task:
-    def __init__(self, state: Any, tape: str, next: str, node: Node) -> None:
-        self.state : Any = state
-        self.tape : str = tape
-        self.next : str = next
-        self.node : Node = node
-
-class PushdownTask(Task):
-
-    def __init__(self, state, stack, tape, next, node) -> None:
-        self.state = state
-        self.stack = stack
-        self.tape = tape
-        self.next = next
-        self.node = node
+from anytree.dotexport import DotExporter
 
 class TaskCounter:
     def __init__(self, value: int = 0) -> None:
         self.value = value
         self.lock = Lock()
 
-    def add_task(self) -> None:
+    """
+    Add tasks to task counter
+    """
+    def add_tasks(self, num: int) -> None:
         with self.lock:
-            self.value += 1
+            self.value += num
 
+    """
+    Finish task on task counter
+    """
     def finish_task(self) -> None:
         with self.lock:
             self.value -= 1
 
-class NonDeterministicAutomata:
+"""
+TODO: Re-implement multi-core support. Current implementation is cleaner, but unstable
+"""
+class NonDeterministicAutomata(AbstractNonDeterministicAutomata):
 
     def __init__(self, states: tuple, alphabet: Iterable, initial_state: tuple, final_states: tuple, delta: Function) -> None:
-        self.states = set(states)
-        self.alphabet = set(alphabet)
-        self.initial_state = initial_state
-        self.final_states = set(final_states)
-        self.delta = delta
-        self.network = nx.DiGraph()
-        self.lock = Lock()
-
-        self.end : Task | None = None
-
-        self.network.add_nodes_from([str(state) for state in self.states])
+        super().__init__(states, alphabet, initial_state, final_states, delta)
 
         edge_map = defaultdict(list)
 
@@ -75,54 +60,72 @@ class NonDeterministicAutomata:
             return self.initial_state in self.final_states, []
 
         queue = Queue()
-        counter = TaskCounter(2)
+        return_queue = Queue(1)
+        counter = TaskCounter(0)
 
-        for symbol in tape:
-            if symbol not in self.alphabet:
-                raise SymbolNotFoundException(symbol)
+        self._inputAllowed(tape)
 
         root = Node((self.initial_state, tape))
+        self._prepare_queue(root, tape, queue)
 
-        queue.put(Task(self.initial_state, tape, tape[0], root))
-        queue.put(Task(self.initial_state, tape, "", root))
-
-        stopped = False
-
-        with ThreadPoolExecutor(max_workers=16) as executor:
-            while counter.value != 0:
-                task : Task | None = queue.get(block=True)
+        """
+        with ProcessPoolExecutor(max_workers=16) as executor:
+            while True:
+                task : Task | None = queue.get(block=True, timeout=0.5)
                 if task is None:
-                    stopped = True
-                    break
-                executor.submit(self.__acceptsInput, task, queue, counter)
+                    if counter.value != 0:
+                        break
+                    else:
+                        continue
+                executor.submit(self.__acceptsInput, task, queue, return_queue, counter)
+                counter.add_task()
             executor.shutdown(wait=False)
-        if stopped:
-            path = [(self.end.state, self.end.tape)] + [node.name for node in self.end.node.iter_path_reverse()]
-            self.end = None
+        """
+        while True:
+            task : Task | None = queue.get(block=True, timeout=0.5)
+            if task is None:
+                if counter.value != 0:
+                    break
+                else:
+                    continue
+            if return_queue.qsize() != 0:
+                break
+            self.__acceptsInput(task, queue, return_queue, counter)
+
+        # DotExporter(root).to_picture("result.png")
+
+        if return_queue.full():
+            final_state : Task = return_queue.get_nowait()
+            path = [(final_state.state, final_state.tape)] + [node.name for node in final_state.node.iter_path_reverse()]
             return True, path
         else:
             return False, []
 
-    def __insert_node(self, state, parent, next):
+    def _prepare_queue(self, root: Node, tape: str, queue: Queue):
+        queue.put(Task(self.initial_state, tape, tape[0], root))
+        queue.put(Task(self.initial_state, tape, "", root))
+
+    def _insert_node(self, state: Any, parent, next):
         with self.lock:
             node = Node(f"{state}, {next}", parent=parent)
         return node
 
-    def __acceptsInput(self, task: Task, queue: Queue, counter: TaskCounter) -> None:
+    def __acceptsInput(self, task: Task, queue: Queue, return_queue : Queue, counter: TaskCounter) -> None:
 
-        node = self.__insert_node((task.state, task.tape), task.node, task.next if task.next != "" else "λ")
+        node = self._insert_node((task.state, task.tape), task.node, task.next if task.next != "" else "λ")
 
         if len(task.tape) == 0:
             if task.state in self.final_states:
-                self.end = task
-                queue.put(None)
+                return_queue.put_nowait(task)
             counter.finish_task()
+            queue.put(None)
             return
 
         try:
             nextStates = call_func_iterable(self.delta, task.state, task.next)
         except:
             counter.finish_task()
+            queue.put(None)
             return
 
         for state in set(nextStates):
@@ -139,9 +142,7 @@ class NonDeterministicAutomata:
                 lambda_task = Task(state, next_tape, "", node)
 
             queue.put(continue_task)
-            counter.add_task()
-
             queue.put(lambda_task)
-            counter.add_task()
+            counter.add_tasks(2)
 
         counter.finish_task()

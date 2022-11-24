@@ -1,13 +1,12 @@
 from collections import defaultdict
-from typing import Callable, Iterable
+from typing import Iterable
 import networkx as nx
-from gold_python.delta import WrappedFunc
 from gold_python.exceptions import *
 from gold_python.util import call_func_iterable
+from gold_python.automata.util import Function
+from gold_python.automata.abstract import AbstractAutomata
 
-Function = WrappedFunc | Callable
-
-class DeterministicAutomata:
+class DeterministicAutomata(AbstractAutomata):
 
     def __init__(self, states: Iterable, alphabet: Iterable, initial_state: tuple, final_states: tuple, delta: Function) -> None:
         self.states = set([tuple(state) if isinstance(state, list) else state for state in states])
@@ -39,14 +38,9 @@ class DeterministicAutomata:
 
                 self.network.add_edge(str(state), str(nextStates[0]), label=symbol_list)
 
-    def inputAllowed(self, tape: str) -> bool:
-        for symbol in tape:
-            if symbol not in self.alphabet:
-                raise SymbolNotFoundException(symbol)
-
     def acceptsInput(self, tape: str) -> bool:
 
-        self.inputAllowed(tape)
+        self._inputAllowed(tape)
 
         currentState = self.initial_state
 
@@ -67,7 +61,7 @@ class DeterministicTrasducer(DeterministicAutomata):
 
     def getOutput(self, tape: str) -> tuple[str, bool]:
 
-        self.inputAllowed(tape)
+        self._inputAllowed(tape)
 
         outputTape = ""
         currentState = self.initial_state

@@ -5,7 +5,7 @@ class SymbolNotFoundException(Exception):
     """
 
     def __init__(self, symbol) -> None:
-        super().__init__(f"Could not find symbol {symbol} on the alphabet of the automata")
+        super().__init__(f"Could not find symbol {symbol} in the alphabet of the automata")
 
 class FunctionDefinitionNotFoundException(Exception):
     """
