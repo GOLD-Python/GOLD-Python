@@ -1,0 +1,33 @@
+name: Build and Deploy Documentation
+
+on:
+  push:
+    branches:
+      - main # Trigger the action on changes to the main branch, update to match your branch
+    paths:
+      - 'docs/**' # Trigger only when changes are made to the docs directory
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Setup your build environment (example for Python/Sphinx)
+      run: |
+        sudo apt-get install -y python3-sphinx
+        pip install sphinx_rtd_theme
+
+    - name: Build Documentation
+      run: |
+        cd docs
+        make html
+        # Add or modify the build command as required
+
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./docs/build/html # Update this to your build output directory
