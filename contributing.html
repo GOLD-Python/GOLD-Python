@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contributing &mdash; GOLD-Python 0.1.3 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Changelog" href="changelog.html" />
+    <link rel="prev" title="First Steps" href="first_steps.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            GOLD-Python
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installing.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="first_steps.html">First Steps</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Contributing</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">GOLD-Python</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Contributing</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/contributing.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="contributing">
+<h1>Contributing<a class="headerlink" href="#contributing" title="Permalink to this headline"></a></h1>
+<p># Contributing Guide</p>
+<p>Contributing to this project is highly encouraged and appreciated. Below are the steps and guidelines to follow to ensure a smooth contribution process.</p>
+<p>## Step 1: Fork the Repository</p>
+<p>Start by forking the repository. This creates a copy of the project under your GitHub account, allowing you to work without affecting the main project.</p>
+<ol class="arabic simple">
+<li><p>Click the “Fork” button at the top-right corner of the repository.</p></li>
+<li><p>Clone the forked repository to your local machine using <cite>git clone &lt;repository-url&gt;</cite>.</p></li>
+</ol>
+<p>## Step 2: Create a New Branch</p>
+<p>Before making any changes, create a new branch to work in.</p>
+<ol class="arabic simple">
+<li><p>Navigate to the cloned directory.</p></li>
+<li><p>Create a new branch using <cite>git checkout -b &lt;branch-name&gt;</cite>.</p></li>
+<li><p>Make sure the branch name is descriptive and relevant to the changes you plan to make.</p></li>
+</ol>
+<p>## Step 3: Make Your Changes</p>
+<p>Work on the changes within your newly created branch.</p>
+<ol class="arabic simple">
+<li><p>Edit the files as needed.</p></li>
+<li><p>Commit the changes using descriptive commit messages with <cite>git commit -m “Your descriptive message here”</cite>.</p></li>
+</ol>
+<p>## Step 4: Push Changes to GitHub</p>
+<p>Push the changes to your forked repository on GitHub.</p>
+<ol class="arabic simple">
+<li><p>Use <cite>git push origin &lt;branch-name&gt;</cite> to push the changes.</p></li>
+</ol>
+<p>## Step 5: Create a Pull Request (Merge Request)</p>
+<p>Create a pull request to propose your changes to the original project.</p>
+<ol class="arabic simple">
+<li><p>Navigate to the “Pull Requests” tab on the main repository.</p></li>
+<li><p>Click the “New Pull Request” button.</p></li>
+<li><p>Choose your fork and the branch you worked on.</p></li>
+<li><p>Describe your changes and why they should be included.</p></li>
+<li><p>Click “Create Pull Request.”</p></li>
+</ol>
+<p>## Step 6: Ensure All Tests Pass</p>
+<p>Before your changes can be merged, they must pass all automated tests.</p>
+<ol class="arabic simple">
+<li><p>Look for any notifications or messages regarding failing tests.</p></li>
+<li><p>If needed, make necessary adjustments to your code.</p></li>
+<li><p>Push the changes again and ensure the tests pass.</p></li>
+</ol>
+<p>## Step 7: Respond to Feedback</p>
+<p>Maintainers may review your pull request and provide feedback.</p>
+<ol class="arabic simple">
+<li><p>Respond to any comments or requests for changes as needed.</p></li>
+<li><p>Make necessary changes and push them to your branch.</p></li>
+</ol>
+<p>## Finalizing the Contribution</p>
+<p>Once the pull request is approved, the maintainers will merge your changes into the main project. Congratulations, you have successfully contributed!</p>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="first_steps.html" class="btn btn-neutral float-left" title="First Steps" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="changelog.html" class="btn btn-neutral float-right" title="Changelog" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Nicolas Saavedra Gonzalez.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
