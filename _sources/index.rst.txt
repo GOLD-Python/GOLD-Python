@@ -61,7 +61,6 @@ Reference
 
 .. toctree::
    :caption: Reference
-   :maxdepth: 1
    :hidden:
 
    changelog
