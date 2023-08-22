@@ -1,43 +1,47 @@
 from collections import defaultdict
-from concurrent.futures import ProcessPoolExecutor
 from queue import Queue
 from threading import Lock
 from typing import Iterable, Any
 
+from anytree import Node
+
 from gold_python.automata.deterministic import Function
 from gold_python.util import call_func_iterable
-from gold_python.exceptions import *
+from gold_python.exceptions import StateNotFoundException
 from gold_python.automata.abstract import AbstractNonDeterministicAutomata
 from gold_python.automata.util import Task
 
-from anytree import Node
-from anytree.dotexport import DotExporter
 
 class TaskCounter:
     def __init__(self, value: int = 0) -> None:
         self.value = value
         self.lock = Lock()
 
-    """
-    Add tasks to task counter
-    """
     def add_tasks(self, num: int) -> None:
+        """
+        Add tasks to task counter
+        """
         with self.lock:
             self.value += num
 
-    """
-    Finish task on task counter
-    """
     def finish_task(self) -> None:
+        """
+        Finish task on task counter
+        """
         with self.lock:
             self.value -= 1
 
-"""
-TODO: Re-implement multi-core support. Current implementation is cleaner, but unstable
-"""
-class NonDeterministicAutomata(AbstractNonDeterministicAutomata):
 
-    def __init__(self, states: tuple, alphabet: Iterable, initial_state: tuple, final_states: tuple, delta: Function) -> None:
+# TODO: Re-implement multi-core support. Current implementation is cleaner, but unstable
+class NonDeterministicAutomata(AbstractNonDeterministicAutomata):
+    def __init__(
+        self,
+        states: Iterable,
+        alphabet: Iterable,
+        initial_state: tuple | Any,
+        final_states: tuple | list,
+        delta: Function,
+    ) -> None:
         super().__init__(states, alphabet, initial_state, final_states, delta)
 
         edge_map = defaultdict(list)
@@ -54,13 +58,18 @@ class NonDeterministicAutomata(AbstractNonDeterministicAutomata):
                     symbol_list = ", ".join(edge_map[str(state), str(nextState)])
                     self.network.add_edge(str(state), str(nextState), label=symbol_list)
 
-    def acceptsInput(self, tape: str) -> tuple[bool, list]:
+    def acceptsInput(self, tape: str) -> bool:
+        return self.acceptsInputPath(tape)[0]
 
+    def acceptsInputPath(self, tape: str) -> tuple[bool, list]:
+        """
+        May god have mercy on my soul
+        """
         if len(tape) == 0:
             return self.initial_state in self.final_states, []
 
-        queue = Queue()
-        return_queue = Queue(1)
+        queue: Queue = Queue()
+        return_queue: Queue = Queue(1)
         counter = TaskCounter(0)
 
         self._inputAllowed(tape)
@@ -69,6 +78,8 @@ class NonDeterministicAutomata(AbstractNonDeterministicAutomata):
         self._prepare_queue(root, tape, queue)
 
         """
+        TODO: Remove this comment when multi-core support is re-implemented
+
         with ProcessPoolExecutor(max_workers=16) as executor:
             while True:
                 task : Task | None = queue.get(block=True, timeout=0.5)
@@ -81,8 +92,9 @@ class NonDeterministicAutomata(AbstractNonDeterministicAutomata):
                 counter.add_task()
             executor.shutdown(wait=False)
         """
+
         while True:
-            task : Task | None = queue.get(block=True, timeout=0.5)
+            task: Task | None = queue.get(block=True, timeout=0.5)
             if task is None:
                 if counter.value != 0:
                     break
@@ -95,8 +107,10 @@ class NonDeterministicAutomata(AbstractNonDeterministicAutomata):
         # DotExporter(root).to_picture("result.png")
 
         if return_queue.full():
-            final_state : Task = return_queue.get_nowait()
-            path = [(final_state.state, final_state.tape)] + [node.name for node in final_state.node.iter_path_reverse()]
+            final_state: Task = return_queue.get_nowait()
+            path = [(final_state.state, final_state.tape)] + [
+                node.name for node in final_state.node.iter_path_reverse()
+            ]
             return True, path
         else:
             return False, []
@@ -110,9 +124,12 @@ class NonDeterministicAutomata(AbstractNonDeterministicAutomata):
             node = Node(f"{state}, {next}", parent=parent)
         return node
 
-    def __acceptsInput(self, task: Task, queue: Queue, return_queue : Queue, counter: TaskCounter) -> None:
-
-        node = self._insert_node((task.state, task.tape), task.node, task.next if task.next != "" else "λ")
+    def __acceptsInput(
+        self, task: Task, queue: Queue, return_queue: Queue, counter: TaskCounter
+    ) -> None:
+        node = self._insert_node(
+            (task.state, task.tape), task.node, task.next if task.next != "" else "λ"
+        )
 
         if len(task.tape) == 0:
             if task.state in self.final_states:
@@ -123,6 +140,7 @@ class NonDeterministicAutomata(AbstractNonDeterministicAutomata):
 
         try:
             nextStates = call_func_iterable(self.delta, task.state, task.next)
+            # pylint: disable=bare-except
         except:
             counter.finish_task()
             queue.put(None)

@@ -1,3 +1,10 @@
+"""
+This module contains all the exceptions that can be raised by the automata
+
+The exceptions are raised by the automata classes in the automata module
+when an error occurs during the execution of the automata.
+"""
+
 
 class SymbolNotFoundException(Exception):
     """
@@ -5,7 +12,10 @@ class SymbolNotFoundException(Exception):
     """
 
     def __init__(self, symbol) -> None:
-        super().__init__(f"Could not find symbol {symbol} in the alphabet of the automata")
+        super().__init__(
+            f"Could not find symbol {symbol} in the alphabet of the automata"
+        )
+
 
 class FunctionDefinitionNotFoundException(Exception):
     """
@@ -13,7 +23,10 @@ class FunctionDefinitionNotFoundException(Exception):
     """
 
     def __init__(self, name, num) -> None:
-        super().__init__(f"Could not find a definition for the function {name} with {num} parameters")
+        super().__init__(
+            f"Could not find a definition for the function {name} with {num} parameters"
+        )
+
 
 class PathNotFoundException(Exception):
     """
@@ -21,7 +34,10 @@ class PathNotFoundException(Exception):
     """
 
     def __init__(self, symbol, state) -> None:
-        super().__init__(f"No path was found for the symbol {symbol} from the state {state}")
+        super().__init__(
+            f"No path was found for the symbol {symbol} from the state {state}"
+        )
+
 
 class MultiplePathsFoundException(Exception):
     """
@@ -29,7 +45,10 @@ class MultiplePathsFoundException(Exception):
     """
 
     def __init__(self, symbol, state) -> None:
-        super().__init__(f"Multiple paths have been found for the symbol {symbol} from the state {state}, when only one path should be taken")
+        super().__init__(
+            f"Multiple paths have been found for the symbol {symbol} from the state {state}, when only one path should be taken"
+        )
+
 
 class StateNotFoundException(Exception):
     """
@@ -37,11 +56,13 @@ class StateNotFoundException(Exception):
     """
 
     def __init__(self, symbol, state, errstate) -> None:
-
-        if hasattr(errstate, '__iter__') and not isinstance(errstate, str):
+        if hasattr(errstate, "__iter__") and not isinstance(errstate, str):
             errstate = ", ".join(errstate)
 
-        super().__init__(f"The state(s) {errstate} generated from the state {state} and symbol {symbol} is/are not part of the set of possible states for the automata")
+        super().__init__(
+            f"The state(s) {errstate} generated from the state {state} and symbol {symbol} is/are not part of the set of possible states for the automata"
+        )
+
 
 class NotEnoughArgumentsException(Exception):
     """
@@ -49,7 +70,10 @@ class NotEnoughArgumentsException(Exception):
     """
 
     def __init__(self, name) -> None:
-        super().__init__(f"Not enough arguments have been supplied to the delta-like function {name}")
+        super().__init__(
+            f"Not enough arguments have been supplied to the delta-like function {name}"
+        )
+
 
 class OutputSymbolNotFoundException(Exception):
     """
@@ -57,4 +81,6 @@ class OutputSymbolNotFoundException(Exception):
     """
 
     def __init__(self, symbols) -> None:
-        super().__init__(f"The output tape given by the trasducer has symbols that are missing from it's output alphabet: {symbols}")
+        super().__init__(
+            f"The output tape given by the trasducer has symbols that are missing from it's output alphabet: {symbols}"
+        )

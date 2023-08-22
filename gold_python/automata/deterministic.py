@@ -1,15 +1,29 @@
 from collections import defaultdict
-from typing import Iterable
+from typing import Iterable, Any
 import networkx as nx
-from gold_python.exceptions import *
+from gold_python.exceptions import (
+    PathNotFoundException,
+    MultiplePathsFoundException,
+    StateNotFoundException,
+    OutputSymbolNotFoundException,
+)
 from gold_python.util import call_func_iterable
 from gold_python.automata.util import Function
 from gold_python.automata.abstract import AbstractAutomata
 
-class DeterministicAutomata(AbstractAutomata):
 
-    def __init__(self, states: Iterable, alphabet: Iterable, initial_state: tuple, final_states: tuple, delta: Function) -> None:
-        self.states = set([tuple(state) if isinstance(state, list) else state for state in states])
+class DeterministicAutomata(AbstractAutomata):
+    def __init__(
+        self,
+        states: Iterable,
+        alphabet: Iterable,
+        initial_state: tuple | Any,
+        final_states: tuple | list,
+        delta: Function,
+    ) -> None:
+        self.states = set(
+            [tuple(state) if isinstance(state, list) else state for state in states]
+        )
         self.alphabet = set(alphabet)
         self.initial_state = initial_state
         self.final_states = set(final_states)
@@ -39,7 +53,6 @@ class DeterministicAutomata(AbstractAutomata):
                 self.network.add_edge(str(state), str(nextStates[0]), label=symbol_list)
 
     def acceptsInput(self, tape: str) -> bool:
-
         self._inputAllowed(tape)
 
         currentState = self.initial_state
@@ -47,20 +60,29 @@ class DeterministicAutomata(AbstractAutomata):
         for symbol in tape:
             currentState = call_func_iterable(self.delta, currentState, symbol)[0]
 
-            currentState = tuple(currentState) if isinstance(currentState, list) else currentState
+            currentState = (
+                tuple(currentState) if isinstance(currentState, list) else currentState
+            )
 
         return currentState in self.final_states
 
+
 class DeterministicTrasducer(DeterministicAutomata):
-
-    def __init__(self, states: Iterable, alphabet: Iterable, output_alphabet: Iterable, initial_state: tuple, final_states: tuple, delta: Function, transfunc: Function) -> None:
-
+    def __init__(
+        self,
+        states: Iterable,
+        alphabet: Iterable,
+        output_alphabet: Iterable,
+        initial_state: tuple | Any,
+        final_states: tuple | list,
+        delta: Function,
+        transfunc: Function,
+    ) -> None:
         super().__init__(states, alphabet, initial_state, final_states, delta)
         self.output_alphabet = set(output_alphabet)
         self.transfunc = transfunc
 
     def getOutput(self, tape: str) -> tuple[str, bool]:
-
         self._inputAllowed(tape)
 
         outputTape = ""
@@ -69,9 +91,13 @@ class DeterministicTrasducer(DeterministicAutomata):
         for symbol in tape:
             outputTape += call_func_iterable(self.transfunc, currentState, symbol)[0]
             currentState = call_func_iterable(self.delta, currentState, symbol)[0]
-            currentState = tuple(currentState) if isinstance(currentState, list) else currentState
+            currentState = (
+                tuple(currentState) if isinstance(currentState, list) else currentState
+            )
 
         if not set(outputTape).issubset(self.output_alphabet):
-            raise OutputSymbolNotFoundException(self.output_alphabet.difference(outputTape))
+            raise OutputSymbolNotFoundException(
+                self.output_alphabet.difference(outputTape)
+            )
 
         return outputTape, currentState in self.final_states

@@ -8,12 +8,11 @@ along with the code formatter.
 import __future__
 from gold_python import *  # noqa: F401
 
+
 class TestDeterministic:  # noqa: D101
-
     def test_deterministic(self) -> None:
-
         @deltafunc
-        def delta(state: int, symbol: str) -> int:
+        def delta(state: int, symbol: str) -> tuple[int, int] | int:
             if state % 2 == 0:
                 return (state, 2)
             return (state + 1) % 4
@@ -27,15 +26,16 @@ class TestDeterministic:  # noqa: D101
         initial_state = 0
         final_states = [3]
 
-        automata = DeterministicAutomata(states, alphabet, initial_state, final_states, delta)
+        automata = DeterministicAutomata(
+            states, alphabet, initial_state, final_states, delta
+        )
 
         assert not automata.acceptsInput("a")
         assert automata.acceptsInput("aa")
 
     def test_transducer(self) -> None:
-
         @deltafunc
-        def delta(state: int, _: str) -> int:
+        def delta(state: int, _: str) -> tuple[int, int] | int:
             if state % 2 == 0:
                 return (state, 2)
             return (state + 1) % 4
@@ -45,13 +45,13 @@ class TestDeterministic:  # noqa: D101
             return (state + extra + 1) % 4
 
         @transducerfunc
-        def trans(state: int, _: str) -> int:
+        def trans(state: int, _: str) -> str:
             if state % 2 == 0:
                 return "a"
             return "b"
 
         @trans.register
-        def _(_: int, __: int, ___: str) -> int:
+        def _(_: int, __: int, ___: str) -> str:
             return "c"
 
         states = [0, 1, 2, 3, [0, 2], [1, 2], [2, 2], [3, 2]]
@@ -61,7 +61,9 @@ class TestDeterministic:  # noqa: D101
         initial_state = 0
         final_states = [3]
 
-        automata = DeterministicTrasducer(states, alphabet, output_alphabet, initial_state, final_states, delta, trans)
+        automata = DeterministicTrasducer(
+            states, alphabet, output_alphabet, initial_state, final_states, delta, trans
+        )
 
         assert automata.getOutput("a")[0] == "a"
         assert automata.getOutput("aa")[0] == "ac"

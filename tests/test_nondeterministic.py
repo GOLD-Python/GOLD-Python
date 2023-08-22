@@ -9,31 +9,34 @@ import __future__
 from gold_python import *
 from gold_python.automata.nondeterministic import NonDeterministicAutomata  # noqa: F401
 
+
 class TestNonDeterministic:  # noqa: D101
-
     def test_nondeterministic(self) -> None:
-
         @deltafunc
         def delta(state: int, symbol: str) -> int:
             if symbol != "":
                 return (state + 1) % 4
+            raise Exception("No path found")
 
         @delta.register
         def _(state: int, symbol: str) -> int:
             if symbol != "":
                 return (state + 2) % 4
+            raise Exception("No path found")
 
         states = [0, 1, 2, 3]
         alphabet = ["a"]
         initial_state = 0
         final_states = [3]
 
-        automata = NonDeterministicAutomata(states, alphabet, initial_state, final_states, delta)
+        automata = NonDeterministicAutomata(
+            states, alphabet, initial_state, final_states, delta
+        )
 
-        assert not automata.acceptsInput("")[0]
-        assert not automata.acceptsInput("a")[0]
-        assert automata.acceptsInput("aa")[0]
-        assert automata.acceptsInput("aaa")[0]
+        assert not automata.acceptsInput("")
+        assert not automata.acceptsInput("a")
+        assert automata.acceptsInput("aa")
+        assert automata.acceptsInput("aaa")
 
         @deltafunc
         def delta2(state: int, symbol: str) -> int:
@@ -46,15 +49,18 @@ class TestNonDeterministic:  # noqa: D101
         def _(state: int, symbol: str) -> int:
             if symbol != "":
                 return (state + 2) % 5
+            raise Exception("No path found")
 
         states = [0, 1, 2, 3, 4]
         alphabet = ["a"]
         initial_state = 0
         final_states = [4]
 
-        automata = NonDeterministicAutomata(states, alphabet, initial_state, final_states, delta2)
+        automata = NonDeterministicAutomata(
+            states, alphabet, initial_state, final_states, delta2
+        )
 
-        assert not automata.acceptsInput("")[0]
-        assert not automata.acceptsInput("a")[0]
-        assert automata.acceptsInput("aa")[0]
-        assert automata.acceptsInput("aaa")[0]
+        assert not automata.acceptsInput("")
+        assert not automata.acceptsInput("a")
+        assert automata.acceptsInput("aa")
+        assert automata.acceptsInput("aaa")

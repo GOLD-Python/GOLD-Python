@@ -1,5 +1,9 @@
 {
-    "python.analysis.extraPaths": ["gold-python", "tests", ".venv/bin/python"],
+    "python.analysis.extraPaths": [
+        "gold-python",
+        "tests",
+        ".venv/bin/python"
+    ],
     "editor.tabSize": 4,
     "editor.insertSpaces": true,
     "editor.wordWrapColumn": 88,
@@ -12,11 +16,13 @@
     "python.linting.lintOnSave": true,
     "python.linting.pylintEnabled": false,
     "python.linting.mypyEnabled": true,
-    "python.linting.flake8Enabled": false,
-    "python.linting.flake8Args": ["--verbose"],
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true,
     "python.testing.pytestArgs": [],
     "esbonio.sphinx.confDir": "",
-    "restructuredtext.syntaxHighlighting.disabled": true
+    "restructuredtext.syntaxHighlighting.disabled": true,
+    "python.formatting.provider": "none",
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.black-formatter"
+    }
 }

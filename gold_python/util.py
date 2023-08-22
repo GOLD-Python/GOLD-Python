@@ -12,6 +12,7 @@ def combine(functions, *args):
             nextStates.append(state)
     return nextStates
 
+
 def combine_stack(functions, *args):
     """
     Combines the results of multiple delta functions and the state of the stacks within the calls and returns every new state as well as stack result. This is used on the pushdownfunc decorator for Pushdown Automata
@@ -27,13 +28,13 @@ def combine_stack(functions, *args):
     return nextStates
 
 
-def call_func_iterable(func: Callable, args: Iterable | Any, *constants: tuple):
+def call_func_iterable(func: Callable, args: Iterable | Any, *constants: Iterable):
     """
     Calls the function by splitting the args into different calls depending if the args
     paremeter is an iterable or not. All other arguments are supplied to the right of the
     function in the same order
     """
-    if hasattr(args, '__iter__') and not isinstance(args, str):
+    if hasattr(args, "__iter__") and not isinstance(args, str):
         return func(*args, *constants)
     else:
         return func(args, *constants)
