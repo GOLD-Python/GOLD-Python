@@ -5,6 +5,10 @@ on:
         branches:
             - main
             - feature/*
+        paths:
+            - "src/**"
+            - "tests/**"
+            - "requirements.txt"
 
 jobs:
     tests:

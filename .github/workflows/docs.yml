@@ -22,7 +22,6 @@ jobs:
 
     - name: Build Documentation
       run: |
-        cd docs
         make html
         # Add or modify the build command as required
 
