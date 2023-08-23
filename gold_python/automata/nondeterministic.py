@@ -1,5 +1,4 @@
-from collections import defaultdict
-from queue import Queue
+from collections import defaultdict, deque
 from threading import Lock
 from typing import Iterable, Any
 
@@ -12,28 +11,27 @@ from gold_python.automata.abstract import AbstractNonDeterministicAutomata
 from gold_python.automata.util import Task
 
 
-class TaskCounter:
-    """
-    Task counter for multi-core support
-    """
+class Queue:
+    def __init__(self, len=None):
+        self.queue = deque(maxlen=len)
 
-    def __init__(self, value: int = 0) -> None:
-        self.value = value
-        self.lock = Lock()
+    def enqueue(self, item):
+        self.queue.append(item)
 
-    def add_tasks(self, num: int) -> None:
-        """
-        Add tasks to task counter
-        """
-        with self.lock:
-            self.value += num
+    def dequeue(self):
+        if self.queue:
+            return self.queue.popleft()
+        else:
+            return None  # Return None when the queue is empty
 
-    def finish_task(self) -> None:
-        """
-        Finish task on task counter
-        """
-        with self.lock:
-            self.value -= 1
+    def peek(self):
+        if self.queue:
+            return self.queue[0]
+        else:
+            return None  # Return None when the queue is empty
+
+    def __len__(self):
+        return len(self.queue)
 
 
 # TODO: Re-implement multi-core support. Current implementation is cleaner, but slower.
@@ -72,9 +70,9 @@ class NonDeterministicAutomata(AbstractNonDeterministicAutomata):
             return self.initial_state in self.final_states, []
 
         # Create queue for tasks and a return queue to check if a path has been found
+
         queue: Queue = Queue()
         return_queue: Queue = Queue(1)
-        counter = TaskCounter(0)
 
         self._input_allowed(tape)
 
@@ -85,20 +83,18 @@ class NonDeterministicAutomata(AbstractNonDeterministicAutomata):
         # Main loop to process tasks
         while True:
             # Get task from queue
-            task: Task | None = queue.get(block=True, timeout=0.5)
-            if task is None:
-                if counter.value != 0:
-                    break
-                else:
-                    continue
-            if return_queue.qsize() != 0:
+            finished = return_queue.peek()
+            if finished is not None:
                 break
-            # Process task
-            self.__accepts_input(task, queue, return_queue, counter)
+            task: Task | None = queue.dequeue()
+            if task is None:
+                break
+
+            self._accepts_input(task, queue, return_queue)
 
         # Check if path has been found, and construct path if it has
-        if return_queue.full():
-            final_state: Task = return_queue.get_nowait()
+        if return_queue.peek() is not None:
+            final_state: Task = return_queue.dequeue()
             path = [(final_state.state, final_state.tape)] + [
                 node.name for node in final_state.node.iter_path_reverse()
             ]
@@ -108,8 +104,8 @@ class NonDeterministicAutomata(AbstractNonDeterministicAutomata):
 
     def _prepare_queue(self, root: Node, tape: str, queue: Queue):
         # Add initial tasks to queue, including lambda transitions
-        queue.put(Task(self.initial_state, tape, tape[0], root))
-        queue.put(Task(self.initial_state, tape, "", root))
+        queue.enqueue(Task(self.initial_state, tape, tape[0], root))
+        queue.enqueue(Task(self.initial_state, tape, "", root))
 
     def _insert_node(self, state: Any, parent, next):
         # Insert node into tree using lock, and return node
@@ -117,8 +113,11 @@ class NonDeterministicAutomata(AbstractNonDeterministicAutomata):
             node = Node(f"{state}, {next}", parent=parent)
         return node
 
-    def __accepts_input(
-        self, task: Task, queue: Queue, return_queue: Queue, counter: TaskCounter
+    def _accepts_input(
+        self,
+        task: Task,
+        queue: Queue,
+        return_queue: Queue,
     ) -> None:
         # Insert node into tree, if empty transition, insert lambda symbol
         node = self._insert_node(
@@ -128,9 +127,7 @@ class NonDeterministicAutomata(AbstractNonDeterministicAutomata):
         # Finish task if tape is empty, and add to return queue if final state
         if len(task.tape) == 0:
             if task.state in self.final_states:
-                return_queue.put_nowait(task)
-            counter.finish_task()
-            queue.put(None)
+                return_queue.enqueue(task)
             return
 
         # Get next states from delta function, and create tasks for each state
@@ -138,8 +135,6 @@ class NonDeterministicAutomata(AbstractNonDeterministicAutomata):
         try:
             nextStates = call_func_iterable(self.delta, task.state, task.next)
         except:
-            counter.finish_task()
-            queue.put(None)
             return
 
         # Add tasks to queue, and increment task counter. Increment task counter by 2, since each task creates 2 new tasks, one for the next symbol, and one for lambda transition
@@ -157,9 +152,5 @@ class NonDeterministicAutomata(AbstractNonDeterministicAutomata):
                 continue_task = Task(state, next_tape, next_symbol, node)
                 lambda_task = Task(state, next_tape, "", node)
 
-            queue.put(continue_task)
-            queue.put(lambda_task)
-            counter.add_tasks(2)
-
-        # Finish current task
-        counter.finish_task()
+            queue.enqueue(continue_task)
+            queue.enqueue(lambda_task)
