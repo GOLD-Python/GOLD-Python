@@ -9,6 +9,7 @@ on:
             - "gold_python/**"
             - "tests/**"
             - "requirements.txt"
+    workflow_dispatch:
 
 jobs:
     tests:

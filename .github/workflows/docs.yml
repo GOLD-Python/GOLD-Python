@@ -6,6 +6,7 @@ on:
       - main # Trigger the action on changes to the main branch, update to match your branch
     paths:
       - 'docs/**' # Trigger only when changes are made to the docs directory
+  workflow_dispatch:
 
 jobs:
   build:
