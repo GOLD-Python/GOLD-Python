@@ -9,6 +9,13 @@ from gold_python.automata.util import Function
 
 
 class AbstractAutomata(abc.ABC):
+    """
+    Abstract class for automata.
+
+    This class is the base class for all automata. It contains the basic
+    attributes and methods that all automata should have.
+    """
+
     def __init__(
         self,
         states: Iterable,
@@ -37,8 +44,11 @@ class AbstractAutomata(abc.ABC):
 
 
 class AbstractNonDeterministicAutomata(AbstractAutomata):
+    """
+    Abstract class for non-deterministic automata.
 
-    """Abstract class for non-deterministic automata."""
+    This class is the base class for all non-deterministic automata. It contains the basic attributes and methods that all non-deterministic automata should have. It also contains the basic attributes and methods that all deterministic automata should have, since all deterministic automata are non-deterministic automata with a single path.
+    """
 
     def __init__(
         self,

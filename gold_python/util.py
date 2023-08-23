@@ -31,8 +31,7 @@ def combine_stack(functions, *args):
 def call_func_iterable(func: Callable, args: Iterable | Any, *constants: Iterable):
     """
     Calls the function by splitting the args into different calls depending if the args
-    paremeter is an iterable or not. All other arguments are supplied to the right of the
-    function in the same order
+    paremeter is an iterable or not. All other arguments are supplied to the right of the function in the same order
     """
     if hasattr(args, "__iter__") and not isinstance(args, str):
         return func(*args, *constants)
