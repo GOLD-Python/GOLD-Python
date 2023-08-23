@@ -33,10 +33,10 @@ class TestNonDeterministic:  # noqa: D101
             states, alphabet, initial_state, final_states, delta
         )
 
-        assert not automata.acceptsInput("")
-        assert not automata.acceptsInput("a")
-        assert automata.acceptsInput("aa")
-        assert automata.acceptsInput("aaa")
+        assert not automata.accepts_input("")
+        assert not automata.accepts_input("a")
+        assert automata.accepts_input("aa")
+        assert automata.accepts_input("aaa")
 
         @deltafunc
         def delta2(state: int, symbol: str) -> int:
@@ -60,7 +60,7 @@ class TestNonDeterministic:  # noqa: D101
             states, alphabet, initial_state, final_states, delta2
         )
 
-        assert not automata.acceptsInput("")
-        assert not automata.acceptsInput("a")
-        assert automata.acceptsInput("aa")
-        assert automata.acceptsInput("aaa")
+        assert not automata.accepts_input("")
+        assert not automata.accepts_input("a")
+        assert automata.accepts_input("aa")
+        assert automata.accepts_input("aaa")

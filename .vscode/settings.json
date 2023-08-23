@@ -19,6 +19,7 @@
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true,
     "python.testing.pytestArgs": [],
+    "mypy.dmypyExecutable": "${workspaceFolder}/.venv/bin/dmypy",
     "esbonio.sphinx.confDir": "",
     "restructuredtext.syntaxHighlighting.disabled": true,
     "python.formatting.provider": "none",

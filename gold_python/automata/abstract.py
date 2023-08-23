@@ -26,13 +26,13 @@ class AbstractAutomata(abc.ABC):
         self.delta = delta
         self.network = nx.DiGraph()
 
-    def _inputAllowed(self, tape: str) -> None:
+    def _input_allowed(self, tape: str) -> None:
         for symbol in tape:
             if symbol not in self.alphabet:
                 raise SymbolNotFoundException(symbol)
 
     @abc.abstractmethod
-    def acceptsInput(self, tape: str) -> bool:
+    def accepts_input(self, tape: str) -> bool:
         pass
 
 

@@ -30,8 +30,8 @@ class TestDeterministic:  # noqa: D101
             states, alphabet, initial_state, final_states, delta
         )
 
-        assert not automata.acceptsInput("a")
-        assert automata.acceptsInput("aa")
+        assert not automata.accepts_input("a")
+        assert automata.accepts_input("aa")
 
     def test_transducer(self) -> None:
         @deltafunc
@@ -65,6 +65,6 @@ class TestDeterministic:  # noqa: D101
             states, alphabet, output_alphabet, initial_state, final_states, delta, trans
         )
 
-        assert automata.getOutput("a")[0] == "a"
-        assert automata.getOutput("aa")[0] == "ac"
-        assert automata.getOutput("aaa")[0] == "acb"
+        assert automata.get_output("a")[0] == "a"
+        assert automata.get_output("aa")[0] == "ac"
+        assert automata.get_output("aaa")[0] == "acb"

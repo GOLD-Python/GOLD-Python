@@ -52,8 +52,8 @@ class DeterministicAutomata(AbstractAutomata):
 
                 self.network.add_edge(str(state), str(nextStates[0]), label=symbol_list)
 
-    def acceptsInput(self, tape: str) -> bool:
-        self._inputAllowed(tape)
+    def accepts_input(self, tape: str) -> bool:
+        self._input_allowed(tape)
 
         currentState = self.initial_state
 
@@ -82,8 +82,8 @@ class DeterministicTrasducer(DeterministicAutomata):
         self.output_alphabet = set(output_alphabet)
         self.transfunc = transfunc
 
-    def getOutput(self, tape: str) -> tuple[str, bool]:
-        self._inputAllowed(tape)
+    def get_output(self, tape: str) -> tuple[str, bool]:
+        self._input_allowed(tape)
 
         outputTape = ""
         currentState = self.initial_state

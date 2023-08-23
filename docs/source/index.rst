@@ -12,7 +12,7 @@ The GOLD-Python library, along with this documentation is licensed under the BSD
 .. code:: python
 
    automaton = createAutomaton()
-   accepted = automaton.acceptsInput(input("Enter: "))
+   accepted = automaton.accepts_input(input("Enter: "))
    if accepted:
       print("Accepted")
    else:

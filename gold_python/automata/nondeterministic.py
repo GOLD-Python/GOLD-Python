@@ -58,10 +58,10 @@ class NonDeterministicAutomata(AbstractNonDeterministicAutomata):
                     symbol_list = ", ".join(edge_map[str(state), str(nextState)])
                     self.network.add_edge(str(state), str(nextState), label=symbol_list)
 
-    def acceptsInput(self, tape: str) -> bool:
-        return self.acceptsInputPath(tape)[0]
+    def accepts_input(self, tape: str) -> bool:
+        return self.accepts_input_path(tape)[0]
 
-    def acceptsInputPath(self, tape: str) -> tuple[bool, list]:
+    def accepts_input_path(self, tape: str) -> tuple[bool, list]:
         """
         May god have mercy on my soul
         """
@@ -72,7 +72,7 @@ class NonDeterministicAutomata(AbstractNonDeterministicAutomata):
         return_queue: Queue = Queue(1)
         counter = TaskCounter(0)
 
-        self._inputAllowed(tape)
+        self._input_allowed(tape)
 
         root = Node((self.initial_state, tape))
         self._prepare_queue(root, tape, queue)
@@ -102,7 +102,7 @@ class NonDeterministicAutomata(AbstractNonDeterministicAutomata):
                     continue
             if return_queue.qsize() != 0:
                 break
-            self.__acceptsInput(task, queue, return_queue, counter)
+            self.__accepts_input(task, queue, return_queue, counter)
 
         # DotExporter(root).to_picture("result.png")
 
@@ -124,7 +124,7 @@ class NonDeterministicAutomata(AbstractNonDeterministicAutomata):
             node = Node(f"{state}, {next}", parent=parent)
         return node
 
-    def __acceptsInput(
+    def __accepts_input(
         self, task: Task, queue: Queue, return_queue: Queue, counter: TaskCounter
     ) -> None:
         node = self._insert_node(
