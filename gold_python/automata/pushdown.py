@@ -5,7 +5,7 @@ from anytree import Node
 
 from gold_python.automata.abstract import AbstractNonDeterministicAutomata
 from gold_python.automata.nondeterministic import _Queue
-from gold_python.exceptions import WrongSymbolException, StateNotFoundException
+from gold_python.exceptions import WrongSymbolException
 from gold_python.util import call_func_iterable
 from gold_python.automata.util import PushdownTask, Task
 
