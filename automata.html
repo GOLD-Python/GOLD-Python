@@ -50,8 +50,8 @@
 <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Automata</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#deterministic-automata">Deterministic automata</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#nondeterministic-automata">Nondeterministic automata</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-gold_python.automata.deterministic">Deterministic automata</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-gold_python.automata.nondeterministic">Nondeterministic automata</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="sets.html">Sets</a></li>
@@ -89,11 +89,134 @@
              
   <section id="automata">
 <h1>Automata<a class="headerlink" href="#automata" title="Permalink to this headline"></a></h1>
-<section id="deterministic-automata">
-<h2>Deterministic automata<a class="headerlink" href="#deterministic-automata" title="Permalink to this headline"></a></h2>
+<section id="module-gold_python.automata.deterministic">
+<span id="deterministic-automata"></span><h2>Deterministic automata<a class="headerlink" href="#module-gold_python.automata.deterministic" title="Permalink to this headline"></a></h2>
+<p>This module contains classes for deterministic automata.</p>
+<p>The automatons in this module are deterministic, meaning that for each state and symbol, there is exactly one next state. Errors will be raised if this is not the case.</p>
+<p>There is also a class for deterministic transducers, which are deterministic automata with output. The output is a string of symbols from an output alphabet, which is defined in the transducer.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="gold_python.automata.deterministic.DeterministicAutomata">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DeterministicAutomata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">states</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alphabet</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">final_states</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">gold_python.delta._WrappedFunc</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gold_python.automata.deterministic.DeterministicAutomata" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">gold_python.automata.abstract.AbstractAutomata</span></code></p>
+<p>Class for deterministic automata.</p>
+<p>This class is the base class for all deterministic automata.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>states</strong> (<em>Iterable</em>) – An iterable containing all states of the automata</p></li>
+<li><p><strong>alphabet</strong> (<em>Iterable</em>) – An iterable containing all symbols in the alphabet of the automata</p></li>
+<li><p><strong>initial_state</strong> (<em>Tuple</em><em> | </em><em>Any</em>) – The initial state of the automata</p></li>
+<li><p><strong>final_states</strong> (<em>Tuple</em><em> | </em><em>List</em>) – An iterable containing all final states of the automata</p></li>
+<li><p><strong>delta</strong> (<em>Function</em>) – A function that takes as input a state and a symbol and returns the next state of the automata</p></li>
+</ul>
+</dd>
+</dl>
+<p>The delta function will usually be decorated with the deltafunc decorator from the delta module.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="gold_python.automata.deterministic.DeterministicAutomata.accepts_input">
+<span class="sig-name descname"><span class="pre">accepts_input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tape</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#gold_python.automata.deterministic.DeterministicAutomata.accepts_input" title="Permalink to this definition"></a></dt>
+<dd><p>Check if the automata accepts the given input.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>tape</strong> (<em>str</em>) – The input string to check</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if the automata accepts the input, False otherwise</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="gold_python.automata.deterministic.DeterministicTrasducer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DeterministicTrasducer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">states</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alphabet</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_alphabet</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">final_states</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">gold_python.delta._WrappedFunc</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transfunc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">gold_python.delta._WrappedFunc</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gold_python.automata.deterministic.DeterministicTrasducer" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#gold_python.automata.deterministic.DeterministicAutomata" title="gold_python.automata.deterministic.DeterministicAutomata"><code class="xref py py-class docutils literal notranslate"><span class="pre">gold_python.automata.deterministic.DeterministicAutomata</span></code></a></p>
+<p>Class for deterministic transducers.</p>
+<p>This class defines a deterministic mealy transducer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>states</strong> (<em>Iterable</em>) – An iterable containing all states of the transducer</p></li>
+<li><p><strong>alphabet</strong> (<em>Iterable</em>) – An iterable containing all symbols in the input alphabet of the transducer</p></li>
+<li><p><strong>output_alphabet</strong> (<em>Iterable</em>) – An iterable containing all symbols in the output alphabet of the transducer</p></li>
+<li><p><strong>initial_state</strong> (<em>Tuple</em><em> | </em><em>Any</em>) – The initial state of the transducer</p></li>
+<li><p><strong>final_states</strong> (<em>Tuple</em><em> | </em><em>List</em>) – An iterable containing all final states of the transducer</p></li>
+<li><p><strong>delta</strong> (<em>Function</em>) – A function that takes as input a state and a symbol and returns the next state of the transducer</p></li>
+<li><p><strong>transfunc</strong> (<em>Function</em>) – A function that takes as input a state and a symbol and returns the output of the transducer</p></li>
+</ul>
+</dd>
+</dl>
+<p>The delta and transfunc functions will usually be decorated with the deltafunc and transducerfunc decorators from the delta module.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="gold_python.automata.deterministic.DeterministicTrasducer.get_output">
+<span class="sig-name descname"><span class="pre">get_output</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tape</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#gold_python.automata.deterministic.DeterministicTrasducer.get_output" title="Permalink to this definition"></a></dt>
+<dd><p>Get the output of the transducer for the given input.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>tape</strong> (<em>str</em>) – The input tape</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A tuple containing the output tape and a boolean representing whether the transducer accepts the input</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple[str, bool]</p>
+</dd>
+</dl>
+<p>If the transducer does not accept the input, the output tape will be an empty string.</p>
+</dd></dl>
+
+</dd></dl>
+
 </section>
-<section id="nondeterministic-automata">
-<h2>Nondeterministic automata<a class="headerlink" href="#nondeterministic-automata" title="Permalink to this headline"></a></h2>
+<section id="module-gold_python.automata.nondeterministic">
+<span id="nondeterministic-automata"></span><h2>Nondeterministic automata<a class="headerlink" href="#module-gold_python.automata.nondeterministic" title="Permalink to this headline"></a></h2>
+<p>This module defines a non-deterministic automata class.</p>
+<p>Unlike the deterministic automata class, a non-deterministic automata can have multiple transitions for a given state and symbol. This is represented by a set of next states for each state and symbol. It also has a lambda transition, which is represented by an empty string as the symbol in the delta function.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="gold_python.automata.nondeterministic.NonDeterministicAutomata">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">NonDeterministicAutomata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">states</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alphabet</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">final_states</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">gold_python.delta._WrappedFunc</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gold_python.automata.nondeterministic.NonDeterministicAutomata" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">gold_python.automata.abstract.AbstractNonDeterministicAutomata</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="gold_python.automata.nondeterministic.NonDeterministicAutomata.accepts_input">
+<span class="sig-name descname"><span class="pre">accepts_input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tape</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#gold_python.automata.nondeterministic.NonDeterministicAutomata.accepts_input" title="Permalink to this definition"></a></dt>
+<dd><p>Check if the automata accepts the given input.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>tape</strong> (<em>str</em>) – The input string to check</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if the automata accepts the input, False otherwise</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gold_python.automata.nondeterministic.NonDeterministicAutomata.accepts_input_path">
+<span class="sig-name descname"><span class="pre">accepts_input_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tape</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#gold_python.automata.nondeterministic.NonDeterministicAutomata.accepts_input_path" title="Permalink to this definition"></a></dt>
+<dd><p>Check if the automata accepts the given input, and return the path if it does.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>tape</strong> (<em>str</em>) – The input string to check</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A tuple containing a boolean representing if the automata accepts the input, and a list containing the path taken by the automata if it accepts the input.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Tuple[bool, List]</p>
+</dd>
+</dl>
+<p>This is a separate method from accepts_input, since it returns the path taken by the automata if it accepts the input.</p>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 </section>
 

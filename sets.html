@@ -83,8 +83,43 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="sets">
-<h1>Sets<a class="headerlink" href="#sets" title="Permalink to this headline"></a></h1>
+  <section id="module-gold_python.sets.operations">
+<span id="sets"></span><h1>Sets<a class="headerlink" href="#module-gold_python.sets.operations" title="Permalink to this headline"></a></h1>
+<p>This module contains functions for set operations</p>
+<p>The functions in this module can be used to perform set operations on iterables before
+feeding them to the automata classes in the automata module. This simplifies the process
+of creating automata, since the user does not have to worry about the format of the
+iterables.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="gold_python.sets.operations.between">
+<span class="sig-name descname"><span class="pre">between</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#gold_python.sets.operations.between" title="Permalink to this definition"></a></dt>
+<dd><p>Returns a list of integers between a and b, inclusive</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="gold_python.sets.operations.between_char">
+<span class="sig-name descname"><span class="pre">between_char</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#gold_python.sets.operations.between_char" title="Permalink to this definition"></a></dt>
+<dd><p>Returns a list of characters between a and b, inclusive</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="gold_python.sets.operations.intersection">
+<span class="sig-name descname"><span class="pre">intersection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Set</span></span></span><a class="headerlink" href="#gold_python.sets.operations.intersection" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the intersection of all iterables</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="gold_python.sets.operations.product">
+<span class="sig-name descname"><span class="pre">product</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Set</span></span></span><a class="headerlink" href="#gold_python.sets.operations.product" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the cartesian product of all iterables</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="gold_python.sets.operations.union">
+<span class="sig-name descname"><span class="pre">union</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Set</span></span></span><a class="headerlink" href="#gold_python.sets.operations.union" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the union of all iterables</p>
+</dd></dl>
+
 </section>
 
 

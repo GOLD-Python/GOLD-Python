@@ -83,8 +83,40 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="delta">
-<h1>Delta<a class="headerlink" href="#delta" title="Permalink to this headline"></a></h1>
+  <section id="module-gold_python.delta">
+<span id="delta"></span><h1>Delta<a class="headerlink" href="#module-gold_python.delta" title="Permalink to this headline"></a></h1>
+<p>This module contains decorators for declaring functions as delta functions
+for automata.</p>
+<p>The delta functions are used by the automata classes in the automata module
+to determine the next state of the automata.</p>
+<dl class="py data">
+<dt class="sig sig-object py" id="gold_python.delta.deltafunc">
+<span class="sig-name descname"><span class="pre">deltafunc</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;deltafunc</span> <span class="pre">decorator&gt;</span></em><a class="headerlink" href="#gold_python.delta.deltafunc" title="Permalink to this definition"></a></dt>
+<dd><p>Declares this function as a delta function for automata.</p>
+<p>A delta function must have at least two arguments, and the last argument will
+always be the next symbol. The other arguments before that will be the current state,
+split into variables if the state is a tuple.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="gold_python.delta.pushdownfunc">
+<span class="sig-name descname"><span class="pre">pushdownfunc</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;pushdownfunc</span> <span class="pre">decorator&gt;</span></em><a class="headerlink" href="#gold_python.delta.pushdownfunc" title="Permalink to this definition"></a></dt>
+<dd><p>Declares this function as a pushdown function for pushdown automata.</p>
+<p>A pushdown function must have at least three arguments, the last argument will
+always be the next symbol, and the one before that is the current stack.
+The other arguments before that will be the current state,
+split into variables if the state is a tuple.</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="gold_python.delta.transducerfunc">
+<span class="sig-name descname"><span class="pre">transducerfunc</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;transducerfunc</span> <span class="pre">decorator&gt;</span></em><a class="headerlink" href="#gold_python.delta.transducerfunc" title="Permalink to this definition"></a></dt>
+<dd><p>Declares this function as a transducer function for automata.</p>
+<p>A transducer function must have at least two arguments, and the last argument will
+always be the next symbol. The other arguments before that will be the current state,
+split into variables if the state is a tuple.</p>
+</dd></dl>
+
 </section>
 
 
