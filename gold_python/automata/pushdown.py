@@ -1,3 +1,14 @@
+"""
+This module defines a pushdown automata class.
+
+A pushdown automata is a non-deterministic automata with a stack that
+can store symbols. It can push symbols onto the stack, pop symbols from the stack,
+and check if the top of the stack contains certain symbols. Do take in mind
+that pop operations must give the symbols that are popped, and that the stack
+will throw an exception if the wrong symbol is popped. Adittionally, the stack
+must be empty for the automata to accept the input.
+"""
+
 from copy import deepcopy
 from typing import Iterable, Tuple, Any, List, Callable
 
@@ -16,22 +27,44 @@ class AutomatonStack:
     """
     Class for a stack used in a pushdown automata.
 
-    This class is used to represent the stack of a pushdown automata.
+    This class is used to represent the stack of a pushdown automata. Do take in mind
+    that pop operations must give the symbols that are popped, and that the stack
+    will throw an exception if the wrong symbol is popped.
     """
 
     def __init__(self):
         self.list = []
 
     def pop(self, *symbols):
+        """
+        Pop symbols from the stack.
+
+        Args:
+            symbols (str): The symbols to pop from the stack
+        Raises:
+            WrongSymbolException: If the wrong symbol is popped from the stack
+        """
         for symbol in symbols:
             obtained = self.list.pop()
             if obtained != symbol:
                 raise WrongSymbolException(obtained, symbol)
 
     def push(self, *items):
+        """
+        Push symbols onto the stack.
+
+        Args:
+            items (str): The symbols to push onto the stack
+        """
         self.list.extend(items)
 
     def peek(self, *symbols):
+        """
+        Check if the top of the stack contains certain symbols.
+
+        Args:
+            symbols (str): The symbols to check for
+        """
         if len(symbols) > len(list):
             return False
         i = -1
