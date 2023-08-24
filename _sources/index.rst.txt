@@ -56,6 +56,26 @@ Getting Started
 :doc:`contributing`
    Contributing to the GOLD-Python project
 
+Documentation
+=============
+
+.. toctree::
+   :caption: Documentation
+   :hidden:
+
+   automata
+   sets
+   delta
+
+:doc:`automata`
+   Documentation of all the automata's available in GOLD-Python
+
+:doc:`sets`
+   Documentation of all the set operations given by GOLD-Python
+
+:doc:`delta`
+   Documentation of all the delta decorators in GOLD-Python
+
 Reference
 =========
 
