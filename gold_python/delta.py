@@ -41,7 +41,7 @@ class _WrappedFunc:
 
     def __call__(self, *args: Any) -> list:
         if len(args) < self.__minlen:
-            raise NotEnoughArgumentsException(self.__name)
+            raise NotEnoughArgumentsException(self.__name, self.__minlen, len(args))
 
         if len(self.__registry[len(args)]) < 1:
             raise FunctionDefinitionNotFoundException(self.__name, len(args))

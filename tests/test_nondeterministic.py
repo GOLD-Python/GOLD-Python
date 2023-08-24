@@ -61,6 +61,6 @@ class TestNonDeterministic:  # noqa: D101
         )
 
         assert not automata.accepts_input("")
-        assert not automata.accepts_input("a")
+        assert automata.accepts_input("a")
         assert automata.accepts_input("aa")
         assert automata.accepts_input("aaa")

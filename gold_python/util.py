@@ -7,7 +7,10 @@ def combine(functions, *args):
     """
     nextStates = []
     for func in functions:
-        state = func(*args)
+        try:
+            state = func(*args)
+        except:
+            continue
         if state != None:
             nextStates.append(state)
     return nextStates
@@ -22,7 +25,10 @@ def combine_stack(functions, *args):
     stack = mutableArgs[-2]
     for func in functions:
         mutableArgs[-2] = stack.__copy__()
-        state = func(*mutableArgs)
+        try:
+            state = func(*mutableArgs)
+        except:
+            continue
         if state != None:
             nextStates.append((state, mutableArgs[-2]))
     return nextStates

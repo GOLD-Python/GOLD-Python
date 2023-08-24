@@ -122,10 +122,11 @@ class NonDeterministicAutomata(AbstractNonDeterministicAutomata):
         queue.enqueue(Task(self.initial_state, tape, tape[0], root))
         queue.enqueue(Task(self.initial_state, tape, "", root))
 
-    def _insert_node(self, state: Any, parent, next):
+    def _insert_node(self, state: Any, parent: Node, next: str):
         # Insert node into tree using lock, and return node
+        display_text = f"{state}, {next}" if next != "" else f"{state}, λ"
         with self.lock:
-            node = Node(f"{state}, {next}", parent=parent)
+            node = Node(display_text, parent=parent)
         return node
 
     def _run_task(
@@ -135,9 +136,7 @@ class NonDeterministicAutomata(AbstractNonDeterministicAutomata):
         return_queue: _Queue,
     ) -> None:
         # Insert node into tree, if empty transition, insert lambda symbol
-        node = self._insert_node(
-            (task.state, task.tape), task.node, task.next if task.next != "" else "λ"
-        )
+        node = self._insert_node((task.state, task.tape), task.node, task.next)
 
         # Finish task if tape is empty, and add to return queue if final state
         if len(task.tape) == 0:
@@ -145,12 +144,8 @@ class NonDeterministicAutomata(AbstractNonDeterministicAutomata):
                 return_queue.enqueue(task)
             return
 
-        # Get next states from delta function, and create tasks for each state
-        # NOTE: Any exceptions raised here will be interpreted as no path found
-        try:
-            nextStates = call_func_iterable(self.delta, task.state, task.next)
-        except:
-            return
+        # Exception handling is done in delta function, so no need to check for exceptions here
+        nextStates = call_func_iterable(self.delta, task.state, task.next)
 
         # Add tasks to queue, and increment task counter. Increment task counter by 2, since each task creates 2 new tasks, one for the next symbol, and one for lambda transition
         for state in set(nextStates):

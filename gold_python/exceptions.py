@@ -69,9 +69,9 @@ class NotEnoughArgumentsException(Exception):
     Raised when not enough arguments have been supplied to the delta-like function
     """
 
-    def __init__(self, name) -> None:
+    def __init__(self, name, expected, amount) -> None:
         super().__init__(
-            f"Not enough arguments have been supplied to the delta-like function {name}"
+            f"Not enough arguments have been supplied to the delta-like function {name}, expected at least {expected}, got {amount}"
         )
 
 
@@ -84,3 +84,12 @@ class OutputSymbolNotFoundException(Exception):
         super().__init__(
             f"The output tape given by the trasducer has symbols that are missing from it's output alphabet: {symbols}"
         )
+
+
+class WrongSymbolException(Exception):
+    """
+    Raised when the symbol popped from the stack is not the expected one
+    """
+
+    def __init__(self, expected: str, got: str) -> None:
+        super().__init__(f"Expected symbol {expected}, got {got} instead")
