@@ -17,3 +17,11 @@ Nondeterministic automata
     :members:
     :undoc-members:
     :show-inheritance:
+
+Pushdown automata
+=================
+
+.. automodule:: gold_python.automata.pushdown
+    :members:
+    :undoc-members:
+    :show-inheritance:

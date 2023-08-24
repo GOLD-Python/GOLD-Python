@@ -52,6 +52,7 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Automata</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#module-gold_python.automata.deterministic">Deterministic automata</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-gold_python.automata.nondeterministic">Nondeterministic automata</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-gold_python.automata.pushdown">Pushdown automata</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="sets.html">Sets</a></li>
@@ -200,6 +201,103 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="gold_python.automata.nondeterministic.NonDeterministicAutomata.accepts_input_path">
 <span class="sig-name descname"><span class="pre">accepts_input_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tape</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#gold_python.automata.nondeterministic.NonDeterministicAutomata.accepts_input_path" title="Permalink to this definition"></a></dt>
+<dd><p>Check if the automata accepts the given input, and return the path if it does.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>tape</strong> (<em>str</em>) – The input string to check</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A tuple containing a boolean representing if the automata accepts the input, and a list containing the path taken by the automata if it accepts the input.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Tuple[bool, List]</p>
+</dd>
+</dl>
+<p>This is a separate method from accepts_input, since it returns the path taken by the automata if it accepts the input.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-gold_python.automata.pushdown">
+<span id="pushdown-automata"></span><h2>Pushdown automata<a class="headerlink" href="#module-gold_python.automata.pushdown" title="Permalink to this headline"></a></h2>
+<p>This module defines a pushdown automata class.</p>
+<p>A pushdown automata is a non-deterministic automata with a stack that
+can store symbols. It can push symbols onto the stack, pop symbols from the stack,
+and check if the top of the stack contains certain symbols. Do take in mind
+that pop operations must give the symbols that are popped, and that the stack
+will throw an exception if the wrong symbol is popped. Adittionally, the stack
+must be empty for the automata to accept the input.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="gold_python.automata.pushdown.AutomatonStack">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AutomatonStack</span></span><a class="headerlink" href="#gold_python.automata.pushdown.AutomatonStack" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class for a stack used in a pushdown automata.</p>
+<p>This class is used to represent the stack of a pushdown automata. Do take in mind
+that pop operations must give the symbols that are popped, and that the stack
+will throw an exception if the wrong symbol is popped.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="gold_python.automata.pushdown.AutomatonStack.peek">
+<span class="sig-name descname"><span class="pre">peek</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">symbols</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gold_python.automata.pushdown.AutomatonStack.peek" title="Permalink to this definition"></a></dt>
+<dd><p>Check if the top of the stack contains certain symbols.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>symbols</strong> (<em>str</em>) – The symbols to check for</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gold_python.automata.pushdown.AutomatonStack.pop">
+<span class="sig-name descname"><span class="pre">pop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">symbols</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gold_python.automata.pushdown.AutomatonStack.pop" title="Permalink to this definition"></a></dt>
+<dd><p>Pop symbols from the stack.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>symbols</strong> (<em>str</em>) – The symbols to pop from the stack</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>WrongSymbolException</strong> – If the wrong symbol is popped from the stack</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gold_python.automata.pushdown.AutomatonStack.push">
+<span class="sig-name descname"><span class="pre">push</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">items</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gold_python.automata.pushdown.AutomatonStack.push" title="Permalink to this definition"></a></dt>
+<dd><p>Push symbols onto the stack.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>items</strong> (<em>str</em>) – The symbols to push onto the stack</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="gold_python.automata.pushdown.PushdownAutomata">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PushdownAutomata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">states</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alphabet</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">final_states</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gold_python.automata.pushdown.PushdownAutomata" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">gold_python.automata.abstract.AbstractNonDeterministicAutomata</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="gold_python.automata.pushdown.PushdownAutomata.accepts_input">
+<span class="sig-name descname"><span class="pre">accepts_input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tape</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#gold_python.automata.pushdown.PushdownAutomata.accepts_input" title="Permalink to this definition"></a></dt>
+<dd><p>Check if the automata accepts the given input.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>tape</strong> (<em>str</em>) – The input string to check</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if the automata accepts the input, False otherwise</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="gold_python.automata.pushdown.PushdownAutomata.accepts_input_path">
+<span class="sig-name descname"><span class="pre">accepts_input_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tape</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#gold_python.automata.pushdown.PushdownAutomata.accepts_input_path" title="Permalink to this definition"></a></dt>
 <dd><p>Check if the automata accepts the given input, and return the path if it does.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
