@@ -16,7 +16,7 @@ from gold_python.exceptions import (
 from gold_python.util import combine, combine_stack
 
 
-class WrappedFunc:
+class _WrappedFunc:
     """
     A wrapper class for functions that are callable by delta-like functions
 
@@ -49,7 +49,7 @@ class WrappedFunc:
         return self.__combinefunc(self.__registry[len(args)], *args)
 
 
-class GoldDecorator:
+class _GoldDecorator:
     """
     Base class for all decorators in this module
 
@@ -67,11 +67,11 @@ class GoldDecorator:
     def __repr__(self) -> str:
         return f"<{self.decorator_type} decorator>"
 
-    def __call__(self, func: Callable) -> WrappedFunc:
-        return WrappedFunc(func, self.combine_func, self.min_len)
+    def __call__(self, func: Callable) -> _WrappedFunc:
+        return _WrappedFunc(func, self.combine_func, self.min_len)
 
 
-deltafunc = GoldDecorator("deltafunc", 2, combine)
+deltafunc = _GoldDecorator("deltafunc", 2, combine)
 """
 Declares this function as a delta function for automata.
 
@@ -80,7 +80,7 @@ always be the next symbol. The other arguments before that will be the current s
 split into variables if the state is a tuple.
 """
 
-transducerfunc = GoldDecorator("transducerfunc", 2, combine)
+transducerfunc = _GoldDecorator("transducerfunc", 2, combine)
 """
 Declares this function as a transducer function for automata.
 
@@ -89,7 +89,7 @@ always be the next symbol. The other arguments before that will be the current s
 split into variables if the state is a tuple.
 """
 
-pushdownfunc = GoldDecorator("pushdownfunc", 3, combine_stack)
+pushdownfunc = _GoldDecorator("pushdownfunc", 3, combine_stack)
 """
 Declares this function as a pushdown function for pushdown automata.
 

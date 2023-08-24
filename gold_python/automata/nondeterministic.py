@@ -1,6 +1,11 @@
+"""
+This module defines a non-deterministic automata class.
+
+Unlike the deterministic automata class, a non-deterministic automata can have multiple transitions for a given state and symbol. This is represented by a set of next states for each state and symbol. It also has a lambda transition, which is represented by an empty string as the symbol in the delta function.
+"""
+
 from collections import defaultdict, deque
-from threading import Lock
-from typing import Iterable, Any
+from typing import Iterable, Any, Tuple, List
 
 from anytree import Node
 
@@ -11,7 +16,7 @@ from gold_python.automata.abstract import AbstractNonDeterministicAutomata
 from gold_python.automata.util import Task
 
 
-class Queue:
+class _Queue:
     def __init__(self, len=None):
         self.queue = deque(maxlen=len)
 
@@ -40,8 +45,8 @@ class NonDeterministicAutomata(AbstractNonDeterministicAutomata):
         self,
         states: Iterable,
         alphabet: Iterable,
-        initial_state: tuple | Any,
-        final_states: tuple | list,
+        initial_state: Tuple | Any,
+        final_states: Tuple | List,
         delta: Function,
     ) -> None:
         super().__init__(states, alphabet, initial_state, final_states, delta)
@@ -65,14 +70,24 @@ class NonDeterministicAutomata(AbstractNonDeterministicAutomata):
     def accepts_input(self, tape: str) -> bool:
         return self.accepts_input_path(tape)[0]
 
-    def accepts_input_path(self, tape: str) -> tuple[bool, list]:
+    def accepts_input_path(self, tape: str) -> Tuple[bool, List]:
+        """
+        Check if the automata accepts the given input, and return the path if it does.
+
+        Args:
+            tape (str): The input string to check
+        Returns:
+            Tuple[bool, List]: A tuple containing a boolean representing if the automata accepts the input, and a list containing the path taken by the automata if it accepts the input.
+
+        This is a separate method from accepts_input, since it returns the path taken by the automata if it accepts the input.
+        """
         if len(tape) == 0:
             return self.initial_state in self.final_states, []
 
         # Create queue for tasks and a return queue to check if a path has been found
 
-        queue: Queue = Queue()
-        return_queue: Queue = Queue(1)
+        queue: _Queue = _Queue()
+        return_queue: _Queue = _Queue(1)
 
         self._input_allowed(tape)
 
@@ -90,7 +105,7 @@ class NonDeterministicAutomata(AbstractNonDeterministicAutomata):
             if task is None:
                 break
 
-            self._accepts_input(task, queue, return_queue)
+            self._run_task(task, queue, return_queue)
 
         # Check if path has been found, and construct path if it has
         if return_queue.peek() is not None:
@@ -102,7 +117,7 @@ class NonDeterministicAutomata(AbstractNonDeterministicAutomata):
         else:
             return False, []
 
-    def _prepare_queue(self, root: Node, tape: str, queue: Queue):
+    def _prepare_queue(self, root: Node, tape: str, queue: _Queue):
         # Add initial tasks to queue, including lambda transitions
         queue.enqueue(Task(self.initial_state, tape, tape[0], root))
         queue.enqueue(Task(self.initial_state, tape, "", root))
@@ -113,11 +128,11 @@ class NonDeterministicAutomata(AbstractNonDeterministicAutomata):
             node = Node(f"{state}, {next}", parent=parent)
         return node
 
-    def _accepts_input(
+    def _run_task(
         self,
         task: Task,
-        queue: Queue,
-        return_queue: Queue,
+        queue: _Queue,
+        return_queue: _Queue,
     ) -> None:
         # Insert node into tree, if empty transition, insert lambda symbol
         node = self._insert_node(

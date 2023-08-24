@@ -6,9 +6,9 @@ This module contains utility functions for automata.
 from typing import Callable, Any
 from anytree import Node
 
-from gold_python.delta import WrappedFunc
+from gold_python.delta import _WrappedFunc
 
-Function = WrappedFunc | Callable
+Function = _WrappedFunc | Callable
 
 
 class Task:

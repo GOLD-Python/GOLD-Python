@@ -19,7 +19,7 @@ jobs:
     - name: Setup your build environment (example for Python/Sphinx)
       run: |
         sudo apt-get install -y python3-sphinx
-        pip install sphinx_rtd_theme
+        pip install sphinx_rtd_theme sphinx-favicon
 
     - name: Build Documentation
       run: |

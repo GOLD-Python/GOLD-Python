@@ -1,4 +1,4 @@
-from typing import Iterable, Any
+from typing import Iterable, Any, Tuple, List
 from threading import Lock
 import networkx as nx
 from anytree import Node
@@ -20,12 +20,12 @@ class AbstractAutomata(abc.ABC):
         self,
         states: Iterable,
         alphabet: Iterable,
-        initial_state: tuple | Any,
-        final_states: tuple | list,
+        initial_state: Tuple | Any,
+        final_states: Tuple | List,
         delta: Function,
     ) -> None:
         self.states = set(
-            [tuple(state) if isinstance(state, list) else state for state in states]
+            [tuple(state) if isinstance(state, List) else state for state in states]
         )
         self.alphabet = set(alphabet)
         self.initial_state = initial_state
@@ -40,6 +40,14 @@ class AbstractAutomata(abc.ABC):
 
     @abc.abstractmethod
     def accepts_input(self, tape: str) -> bool:
+        """
+        Check if the automata accepts the given input.
+
+        Args:
+            tape (str): The input string to check
+        Returns:
+            bool: True if the automata accepts the input, False otherwise
+        """
         pass
 
 
@@ -54,8 +62,8 @@ class AbstractNonDeterministicAutomata(AbstractAutomata):
         self,
         states: Iterable,
         alphabet: Iterable,
-        initial_state: tuple | Any,
-        final_states: tuple | list,
+        initial_state: Tuple | Any,
+        final_states: Tuple | List,
         delta: Function,
     ) -> None:
         self.states = set(states)
